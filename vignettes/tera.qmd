@@ -1,7 +1,7 @@
 ---
-title: "rtera"
+title: "tera"
 vignette: >
-  %\VignetteIndexEntry{rtera}
+  %\VignetteIndexEntry{tera}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,12 +21,12 @@ Templating syntax is described in the documentation for [Tera](https://keats.git
 
 ```{r}
 #| label: setup
-library(rtera)
+library(tera)
 ```
 
 ## Usage
 
-To get a feel for what `rtera` can do, let's start with a simple "hello world"
+To get a feel for what `tera` can do, let's start with a simple "hello world"
 example.
 
 ```{r}
@@ -36,7 +36,7 @@ tera <- Tera$new()
 tera$render_string(
   '<p>Hello {{ x }}. This is {{ y }}.</p>',
   x = "world",
-  y = "rtera"
+  y = "tera"
 )
 ```
 
@@ -44,21 +44,21 @@ The syntax and API should look pretty familiar to anyone who has used `glue` to
 do something like `glue::glue("Foo { x }", x = "bar")`. The big difference is
 the object-oriented workflow.
 
-## Initializing `rtera`
+## Initializing `Tera`
 
-Everything in `rtera` revolves around the `rtera` object, which serves as a 
+Everything in `tera` revolves around the `Tera` object, which serves as a 
 template library with encapsulated rendering methods. In the above example, we 
-initialize an `rtera` with an empty template library by calling `Tera$new()` 
+initialize a `Tera` engine with an empty template library by calling `Tera$new()` 
 with no arguments.
 
 If you have a complicated directory system with nested templates and inheritance 
 patterns - a common situation for web development, you may find it easier to 
-initialize an `rtera` by specifying the directory with a glob pattern. Suppose, 
+initialize an `tera` by specifying the directory with a glob pattern. Suppose, 
 for example, that you have a website directory that looks like this: 
 
 ```{r}
 #| label: directory
-template_dir <- system.file("templates", package = "rtera")
+template_dir <- system.file("templates", package = "tera")
 
 cat(
   "website",
@@ -67,7 +67,7 @@ cat(
 )
 ```
 
-You can generate a new `rtera` around this directory like so
+You can generate a new `Tera` around this directory like so
 
 ```{r}
 #| label: glob
@@ -84,7 +84,7 @@ Templates can be added from file or string.
 # add templates manually from file
 tera <- Tera$new()
 tera$add_file_templates(
-  "base.html" = file.path(template_dir, "hello.html"),
+  "base.html" = file.path(template_dir, "base.html"),
   "index.html" = file.path(template_dir, "index.html")
 )
 tera
@@ -102,7 +102,7 @@ templates.
 
 ```{r}
 #| label: reload
-example_dir <- file.path(tempdir(), "rtera-templates")
+example_dir <- file.path(tempdir(), "tera-templates")
 dir.create(example_dir)
 
 file.copy(
@@ -154,8 +154,7 @@ string.
 string <- tera$render_template(
   "index.html",
   title = "This is my blog",
-  x = "world",
-  y = "rtera",
+  p = "Welcome to my awesome homepage.",
   owner = "Blake"
 )
 
@@ -171,8 +170,7 @@ outfile <- file.path(tempdir(), "rendered-index.html")
 tera$render_template(
   "index.html",
   title = "This is my blog",
-  x = "world",
-  y = "rtera",
+  p = "Welcome to my awesome homepage.",
   owner = "Blake",
   outfile = outfile
 )
@@ -187,8 +185,7 @@ And you can render a specific block in a template:
 string <- tera$render_template(
   "index.html",
   title = "This is my blog",
-  x = "world",
-  y = "rtera",
+  p = "Welcome to my awesome homepage.",
   owner = "Blake",
   block = "content"
 )
@@ -360,8 +357,7 @@ Templates can inherit content from each other in one of two ways, either using
 string <- tera$render_string(
   '{%- include "index.html" -%}',
   title = "This is my blog",
-  x = "world",
-  y = "rtera",
+  p = "Welcome to my awesome homepage.",
   owner = "Blake"
 )
 
@@ -369,8 +365,9 @@ cat(string)
 ```
 
 The extension mechanism is a little more involved, requiring that you specify
-content blocks where content from a child document should be injected. For
-instance, our current library has `base.html`:
+content blocks where content from a child document should be injected. We have
+actually been using this method in the examples already. Our current library has 
+`base.html`:
 
 ```{r}
 #| label: base.html
@@ -380,30 +377,29 @@ template_dir |>
   cat(sep = "\n")
 ```
 
+Notice it has two `{% block ... %}`. This is where a child document inserts
+content. And here is `index.html`:
+
+```{r}
+#| label: index.html
+template_dir |>
+  file.path("index.html") |>
+  readLines(warn = FALSE) |>
+  cat(sep = "\n")
+```
+
+Notice it has `{% extends "base.html" %}`. This makes it a child document of
+`base.html`.
+
 ```{r}
 #| label: extends
-base_html <- '<body>
-  <div id="content">
-    {% block content %}
-    {% endblock content %}
-  </div>
-</body>'
+tera <- Tera$new(file.path(template_dir, "**/*.html"))
 
-child_html <- '{% extends "base.html" %}
-{%- block content -%}
-  <h1>{{ title }}</h1>
-  <p>{{ paragraph }}</p>
-{%- endblock content -%}'
-
-tera$add_string_templates(
-  "base.html" = base_html,
-  "child.html" = child_html
-)
-
-string <- tera$render_to_string(
-  "child.html",
-  title = "Index",
-  paragraph = "Welcome to my homepage."
+string <- tera$render_template(
+  "index.html",
+  title = "This is my blog",
+  p = "Welcome to my awesome homepage.",
+  owner = "Blake"
 )
 
 cat(string)

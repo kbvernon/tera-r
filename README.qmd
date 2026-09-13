@@ -7,7 +7,7 @@ knitr:
 ---
 <!-- README.md is generated from README.qmd. Please edit that file -->
 
-# tera-r
+# tera
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/kbvernon/tera-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbvernon/tera-r/actions/workflows/R-CMD-check.yaml)
@@ -15,12 +15,13 @@ knitr:
 [![extendr](https://img.shields.io/badge/extendr-^0.9.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
-The 'tera' package uses 'extendr' to provide access to the 'Tera' templating 
-engine in Rust. Users mainly interact with a Tera R6 object, which serves as a 
-template library with encapsulated methods for rendering templates with a given 
-context. Template syntax supports additional logic, including built-in filters, 
-tests, and functions, as well as loops, conditions, and inheritance. 
-Documentation for Tera's templating syntax can be found at <https://keats.github.io/tera/>.
+The 'tera' package uses 'extendr' to provide access to Vincent Prouillet's 
+'Tera' templating engine in Rust. Users mainly interact with a Tera R6 object, 
+which serves as a template library with encapsulated methods for rendering 
+templates with a given context. Template syntax supports additional logic, 
+including built-in filters, tests, and functions, as well as loops, conditions, 
+and inheritance. Documentation for Tera's templating syntax can be found at 
+<https://keats.github.io/tera/>.
 
 ## Installation
 
