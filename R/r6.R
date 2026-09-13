@@ -152,14 +152,14 @@
 #' )
 #'
 #' # not recognized as html
-#' tera$render_to_string(
+#' tera$render_template(
 #'   "hello",
 #'   x = "&world",
 #'   y = "an apostrophe, '"
 #' )
 #'
 #' # html
-#' tera$render_to_string(
+#' tera$render_template(
 #'   "hello.html",
 #'   x = "&world",
 #'   y = "an apostrophe, '"
@@ -168,7 +168,7 @@
 #' # turn off autoescape
 #' tera$autoescape_off()
 #'
-#' tera$render_to_string(
+#' tera$render_template(
 #'   "hello.html",
 #'   x = "&world",
 #'   y = "an apostrophe, '"
@@ -254,10 +254,10 @@ Tera <- R6::R6Class(
       cli::cli_text("Template library:")
       cli::cli_ul(template_library)
       cli::cli_text("")
-      cli::cli_text(sprintf("Globals: %s", n_global_variables))
-      cli::cli_text(sprintf("Components: %s", n_components))
-      cli::cli_text(sprintf("Autoescape: %s", private$.autoescape))
-      cli::cli_text(sprintf("Delimiters: %s, %s, %s", d_blk, d_var, d_com))
+      cli::cli_text("Globals: {n_global_variables}")
+      cli::cli_text("Components: {n_components}")
+      cli::cli_text("Autoescape: {private$.autoescape}")
+      cli::cli_text("Delimiters: {d_blk}, {d_var}, {d_com}")
       cli::cli_end()
 
       invisible(self)

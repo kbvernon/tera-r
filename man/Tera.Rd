@@ -153,14 +153,14 @@ tera$add_file_templates(
 )
 
 # not recognized as html
-tera$render_to_string(
+tera$render_template(
   "hello",
   x = "&world",
   y = "an apostrophe, '"
 )
 
 # html
-tera$render_to_string(
+tera$render_template(
   "hello.html",
   x = "&world",
   y = "an apostrophe, '"
@@ -169,7 +169,7 @@ tera$render_to_string(
 # turn off autoescape
 tera$autoescape_off()
 
-tera$render_to_string(
+tera$render_template(
   "hello.html",
   x = "&world",
   y = "an apostrophe, '"
