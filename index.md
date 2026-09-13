@@ -1,51 +1,47 @@
-# extera
+# tera
 
-The name `extera` is a portmanteau of `extendr` and `tera`, making it
-suggestive of the package’s intended purpose, which is to provide an
-[`extendr`](https://github.com/extendr/extendr)-powered R wrapper around
-the blazing fast [`tera`](https://github.com/Keats/tera)
-templating-engine in Rust.
+The ‘tera’ package uses ‘extendr’ to provide access to Vincent
+Prouillet’s ‘Tera’ templating engine in Rust. Users mainly interact with
+a Tera R6 object, which serves as a template library with encapsulated
+methods for rendering templates with a given context. Template syntax
+supports additional logic, including built-in filters, tests, and
+functions, as well as loops, conditions, and inheritance. Documentation
+for Tera’s templating syntax can be found at
+<https://keats.github.io/tera/>.
 
 ## Installation
 
-You can install the development version of `extera` like so:
+The published CRAN version:
+
+``` r
+install.packages("tera")
+```
+
+The development version:
 
 ``` r
 # install.packages("pak")
-pak::pak("kbvernon/extera")
+pak::pak("kbvernon/tera-r")
 ```
 
 ## Usage
 
-To get a feel for what `extera` can do, let’s start with a simple “hello
-world” example.
+Here is a simple hello-world example:
 
 ``` r
-library(extera)
+library(tera)
 
-tera <- new_engine()
+tera <- Tera$new()
 
-tera$add_string_templates(
-  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
-)
-
-tera
-#> ── ExTera ──
-#> Template library:
-#> • hello-world
-
-tera$render_to_string(
-  "hello-world",
+tera$render_string(
+  '<p>Hello {{ x }}. This is {{ y }}.</p>',
   x = "world",
-  y = "ExTera"
+  y = "tera"
 )
-#> [1] "<p>Hello world. This is ExTera.</p>"
+#> [1] "<p>Hello world. This is tera.</p>"
 ```
 
-The syntax and API should look pretty familiar to anyone who has used
-`glue` to do something like `glue::glue("Foo { x }", x = "bar")`. The
-big difference is the object-oriented workflow. To learn more, check out
-the [Getting
-started](https://kbvernon.github.io/extera/articles/extera.html) article
-on the package website, or call
-[`vignette("extera")`](https://kbvernon.github.io/extera/articles/extera.md).
+To learn more, check out the [Getting
+started](https://kbvernon.github.io/tera/articles/tera.html) article on
+the package website, or call
+[`vignette("tera")`](https://kbvernon.github.io/tera-r/articles/tera.md).

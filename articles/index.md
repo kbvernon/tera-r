@@ -2,4 +2,4 @@
 
 ### All vignettes
 
-- [extera](https://kbvernon.github.io/extera/articles/extera.md):
+- [tera](https://kbvernon.github.io/tera-r/articles/tera.md):

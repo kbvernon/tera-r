@@ -8,15 +8,15 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/kbvernon/extera/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/kbvernon/tera-r/blob/main/DESCRIPTION)
 
-Vernon K (2026). *extera: Template Engine Inspired by 'tera'*. R package
-version 0.0.0.9000, <https://github.com/kbvernon/extera>.
+Vernon K (2026). *tera: Tera Templating Engine*. R package version
+0.0.0.9000, <https://github.com/kbvernon/tera-r>.
 
     @Manual{,
-      title = {extera: Template Engine Inspired by 'tera'},
+      title = {tera: Tera Templating Engine},
       author = {Kenneth Blake Vernon},
       year = {2026},
       note = {R package version 0.0.0.9000},
-      url = {https://github.com/kbvernon/extera},
+      url = {https://github.com/kbvernon/tera-r},
     }
