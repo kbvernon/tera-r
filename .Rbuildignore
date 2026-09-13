@@ -19,3 +19,4 @@
 ^vignettes/*_files$
 ^justfile$
 ^jarl.toml$
+^air.toml$
