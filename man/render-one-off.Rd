@@ -6,6 +6,8 @@
 \alias{render_string}
 \title{One-Off Template Rendering}
 \usage{
+render_template(path, ..., outfile = NULL, autoescape = TRUE)
+
 render_string(string, ..., outfile = NULL, autoescape = TRUE)
 }
 \arguments{
@@ -20,6 +22,8 @@ string in the current R session.}
 
 \item{autoescape}{boolean scalar, whether to autoescape HTML (default is
 \code{TRUE}).}
+
+\item{string}{character scalar, the template string to render.}
 }
 \value{
 `outfile`` (invisibly)
@@ -27,8 +31,6 @@ string in the current R session.}
 \description{
 For rendering a single template file or string, it may be
 preferable to use these one-off rendering options.
-
-\preformatted{render_template(path, outfile = NULL, ...)}
 }
 \details{
 Requires a path to a template file, not a template string.

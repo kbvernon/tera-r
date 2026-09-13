@@ -3,10 +3,7 @@
 #' @description For rendering a single template file or string, it may be
 #'   preferable to use these one-off rendering options.
 #'
-#' \preformatted{render_template(path, outfile = NULL, ...)}
-#'
-#' @usage NULL
-#'
+#' @param string character scalar, the template string to render.
 #' @param path character scalar, path to a template file
 #' @param ... specify context as key-value pairs where key is the template
 #'   variable and value is the data to inject.
