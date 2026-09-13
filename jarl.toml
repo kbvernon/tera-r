@@ -1,0 +1,6 @@
+[lint]
+default-exclude = true
+exclude = [
+  "R/import-standalone-obj-type.R",
+  "R/import-standalone-types-check.R",
+]

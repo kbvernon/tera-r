@@ -1,0 +1,39 @@
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+name: lint and format
+
+permissions: read-all
+
+jobs:
+
+# https://github.com/etiennebacher/setup-jarl
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: etiennebacher/setup-jarl@v0.1.1
+        with:
+          src: "R/* tests/testthat/*"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+# Workflow derived from https://github.com/posit-dev/setup-air/tree/main/examples
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install
+        uses: posit-dev/setup-air@v1
+
+      - name: Check
+        run: air format --check R/* tests/*

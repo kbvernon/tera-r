@@ -17,3 +17,5 @@
 ^CRAN-SUBMISSION$
 ^vignettes/\.quarto$
 ^vignettes/*_files$
+^justfile$
+^jarl.toml$
