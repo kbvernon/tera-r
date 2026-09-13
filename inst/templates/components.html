@@ -1,0 +1,10 @@
+{%- component button(label, variant = "primary") -%}
+<button class="btn btn-{{variant}}">{{label}}</button>
+{%- endcomponent button -%}
+
+{% component widget(title: string) %}
+<div class="widget">
+    <h3>{{title}}</h3>
+    {{body}}
+</div>
+{% endcomponent widget %}

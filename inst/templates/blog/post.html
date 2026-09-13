@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content -%}
+<h1>{{ title }}</h1>
+<p>Last updated: {{ now() | date(format="%Y-%m-%d") }}.</p>
+<ul>
+    {%- for product in products %}
+    <li>{{ product.name }}: {{ product.price }}</li>
+    {%- endfor %}
+</ul>
+{%- endblock content %}

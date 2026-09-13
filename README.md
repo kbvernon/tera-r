@@ -2,59 +2,56 @@
 
 <!-- README.md is generated from README.qmd. Please edit that file -->
 
-# extera
+# tera-r
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/kbvernon/extera/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbvernon/extera/actions/workflows/R-CMD-check.yaml)
-[![CRAN status](https://www.r-pkg.org/badges/version/extera)](https://CRAN.R-project.org/package=extera)
-[![extendr](https://img.shields.io/badge/extendr-^0.8.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
+
+[![R-CMD-check](https://github.com/kbvernon/tera-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbvernon/tera-r/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/tera.png)](https://CRAN.R-project.org/package=tera)
+[![extendr](https://img.shields.io/badge/extendr-%5E0.9.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
-The name `extera` is a portmanteau of `extendr` and `tera`, making it
-suggestive of the package’s intended purpose, which is to provide an
-[`extendr`](https://github.com/extendr/extendr)-powered R wrapper around
-the blazing fast [`tera`](https://github.com/Keats/tera)
-templating-engine in Rust.
+The ‘tera’ package uses ‘extendr’ to provide access to the ‘Tera’
+templating engine in Rust. Users mainly interact with a Tera R6 object,
+which serves as a template library with encapsulated methods for
+rendering templates with a given context. Template syntax supports
+additional logic, including built-in filters, tests, and functions, as
+well as loops, conditions, and inheritance. Documentation for Tera’s
+templating syntax can be found at <https://keats.github.io/tera/>.
 
 ## Installation
 
-You can install the development version of `extera` like so:
+The published CRAN version:
+
+``` r
+install.packages("tera")
+```
+
+The development version:
 
 ``` r
 # install.packages("pak")
-pak::pak("kbvernon/extera")
+pak::pak("kbvernon/tera-r")
 ```
 
 ## Usage
 
-To get a feel for what `extera` can do, let’s start with a simple “hello
-world” example.
+Here is a simple hello-world example:
 
 ``` r
-library(extera)
+library(tera)
 
-tera <- new_engine()
+tera <- Tera$new()
 
-tera$add_string_templates(
-  "hello-world" = '<p>Hello {{ x }}. This is {{ y }}.</p>'
-)
-
-tera
-#> ── ExTera ──
-#> Template library:
-#> • hello-world
-
-tera$render_to_string(
-  "hello-world",
+tera$render_string(
+  '<p>Hello {{ x }}. This is {{ y }}.</p>',
   x = "world",
-  y = "ExTera"
+  y = "tera"
 )
-#> [1] "<p>Hello world. This is ExTera.</p>"
+#> [1] "<p>Hello world. This is tera.</p>"
 ```
 
-The syntax and API should look pretty familiar to anyone who has used
-`glue` to do something like `glue::glue("Foo { x }", x = "bar")`. The
-big difference is the object-oriented workflow. To learn more, check out
-the [Getting
-started](https://kbvernon.github.io/extera/articles/extera.html) article
-on the package website, or call `vignette("extera")`.
+To learn more, check out the [Getting
+started](https://kbvernon.github.io/tera/articles/tera.html) article on
+the package website, or call `vignette("tera")`.

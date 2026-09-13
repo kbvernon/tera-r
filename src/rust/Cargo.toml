@@ -1,5 +1,5 @@
 [package]
-name = "extera"
+name = "rtera"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.65"
@@ -7,12 +7,33 @@ publish = false
 
 [lib]
 crate-type = ["staticlib"]
-name = "extera"
+name = "rtera"
 
 [dependencies]
-extendr-api = { version = "0.8.1", features = ["serde"] }
+extendr-api = { git = "https://github.com/extendr/extendr", features = ["serde"] }
 serde_json = "1.0.143"
-tera = { version = "1.20", default-features = false }
+tera = {
+  version = "2",
+  features = [
+    "fast",
+    "glob_fs",
+    "preserve_order",
+  ]
+}
+tera-contrib = {
+  version = "0.3",
+  features = [
+    "base64",
+    "date",
+    "filesize_format",
+    "format",
+    "json",
+    "rand",
+    "regex",
+    "slug",
+    "urlencode",
+  ]
+}
 
 [profile.release]
 lto = true

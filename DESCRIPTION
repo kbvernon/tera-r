@@ -1,21 +1,19 @@
-Package: extera
-Title: Template Engine Inspired by 'tera'
+Package: tera
+Title: Tera Templating Engine
 Version: 0.0.0.9000
 Authors@R: 
     person("Kenneth Blake", "Vernon", , "kenneth.b.vernon@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0003-0098-5092"))
-Description: The 'extera' package uses 'extendr' to provide access to the 'tera' 
-    templating engine in Rust. Users mainly interact with an ExTera R6 object, 
-    which serves as a template library with encapsulated methods for rendering 
-    templates. To render a template, users supply a dataset known as a context,
-    which consists of variable names and values. Template syntax supports 
+Description: The 'tera' package uses 'extendr' to provide access to Vincent 
+    Prouillet's 'Tera' templating engine in Rust. Users mainly interact with a 
+    Tera R6 object, which serves as a template library with encapsulated methods 
+    for rendering templates with a given context. Template syntax supports 
     additional logic, including built-in filters, tests, and functions, as well 
-    as loops, conditions, and inheritance. Documentation for tera's templating 
-    syntax can be found at <https://keats.github.io/tera/docs/>.
+    as loops, conditions, and inheritance. Documentation for Tera's templating 
+    syntax can be found at <https://keats.github.io/tera/>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Config/rextendr/version: 0.4.2
 SystemRequirements: Cargo (Rust's package manager), rustc
 Depends: 
@@ -26,9 +24,12 @@ Imports:
     rlang (>= 1.1.0),
     yyjsonr
 Suggests:
-    dplyr,
     knitr,
-    quarto
-URL: https://github.com/kbvernon/extera, https://kbvernon.github.io/extera/
+    quarto,
+    testthat (>= 3.0.0),
+    withr
+URL: https://github.com/kbvernon/tera-r, https://kbvernon.github.io/tera-r/
 VignetteBuilder: 
     quarto
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

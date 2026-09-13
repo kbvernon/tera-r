@@ -1,7 +1,8 @@
 TARGET_DIR = ./rust/target
 LIBDIR = $(TARGET_DIR)/@LIBDIR@
-STATLIB = $(LIBDIR)/libextera.a
-PKG_LIBS = -L$(LIBDIR) -lextera
+STATLIB = $(LIBDIR)/librtera.a
+PKG_LIBS = -L$(LIBDIR) -lrtera
+DOCUMENT = rust/document
 
 all: $(SHLIB) rust_clean
 
@@ -19,24 +20,40 @@ VENDOR_DIR = $(CURDIR)/vendor
 # CRAN note: Cargo and Rustc versions are reported during
 # configure via tools/msrv.R.
 #
-# vendor.tar.xz, if present, is unzipped and used for offline compilation.
+# If a vendor directory exists, it is used for offline compilation. Otherwise if
+# vendor.tar.xz exists, it is unzipped and used for offline compilation.
 $(STATLIB):
-
-	if [ -f ./rust/vendor.tar.xz ]; then \
+	@echo;
+	if [ -d ./vendor ]; then \
+		mkdir -p "$(CARGOTMP)" && \
+		cp rust/vendor-config.toml "$(CARGOTMP)/config.toml" && \
+		echo "* used offline vendor directory"; \
+	elif [ -f ./rust/vendor.tar.xz ]; then \
 		tar xf rust/vendor.tar.xz && \
-		mkdir -p $(CARGOTMP) && \
-		cp rust/vendor-config.toml $(CARGOTMP)/config.toml; \
+		mkdir -p "$(CARGOTMP)" && \
+		cp rust/vendor-config.toml "$(CARGOTMP)/config.toml" && \
+		echo "* unpacked offline vendor tarball"; \
 	fi
 
-	export CARGO_HOME=$(CARGOTMP) && \
+	@echo;
+	export CARGO_HOME="$(CARGOTMP)" && \
 	export PATH="$(PATH):$(HOME)/.cargo/bin" && \
-	@PANIC_EXPORTS@RUSTFLAGS="$(RUSTFLAGS) --print=native-static-libs" cargo build @CRAN_FLAGS@ --lib @PROFILE@ --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR) @TARGET@
+	@PANIC_EXPORTS@RUSTFLAGS="$(RUSTFLAGS) --print=native-static-libs" cargo build @CRAN_FLAGS@ --lib @PROFILE@ --manifest-path=./rust/Cargo.toml --target-dir="$(TARGET_DIR)" @TARGET@
 
+	@echo;
+	if [ -n "$$ROXYGEN_PKG" ]; then \
+		$(CC) -o $(DOCUMENT) rust/document.c $(PKG_LIBS) -L"$(R_HOME)/lib$(R_ARCH)" -lR && \
+		./$(DOCUMENT) $(R_PACKAGE_NAME) ../R/extendr-wrappers.R && \
+		rm -f $(DOCUMENT) && \
+		echo "* generated extendr wrappers"; \
+	fi
+
+	@echo;
 	# Always clean up CARGOTMP
-	rm -Rf $(CARGOTMP);
+	rm -Rf "$(CARGOTMP)";
 
 rust_clean: $(SHLIB)
-	rm -Rf $(CARGOTMP) $(VENDOR_DIR) @CLEAN_TARGET@
+	rm -Rf "$(CARGOTMP)" "$(VENDOR_DIR)" @CLEAN_TARGET@
 
 clean:
-	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) $(TARGET_DIR) $(VENDOR_DIR)
+	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) "$(TARGET_DIR)" "$(VENDOR_DIR)" $(DOCUMENT)

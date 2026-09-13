@@ -1,0 +1,410 @@
+---
+title: "rtera"
+vignette: >
+  %\VignetteIndexEntry{rtera}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette walks through some of the basics of rendering templates with Tera
+in R. Users mainly interact with a Tera R6 object, which serves as a template 
+library with encapsulated methods for rendering templates with a given context. 
+
+A templating engine requires two things:
+
+- a `template`, as you may have guessed, that includes variables and rendering 
+  logic describing where and how to inject data, and
+- a `context`, or a set of variables and values to be injected into the 
+  template.
+
+Templating syntax is described in the documentation for [Tera](https://keats.github.io/tera/).
+
+```{r}
+#| label: setup
+library(rtera)
+```
+
+## Usage
+
+To get a feel for what `rtera` can do, let's start with a simple "hello world"
+example.
+
+```{r}
+#| label: hello-world
+tera <- Tera$new()
+
+tera$render_string(
+  '<p>Hello {{ x }}. This is {{ y }}.</p>',
+  x = "world",
+  y = "rtera"
+)
+```
+
+The syntax and API should look pretty familiar to anyone who has used `glue` to
+do something like `glue::glue("Foo { x }", x = "bar")`. The big difference is
+the object-oriented workflow.
+
+## Initializing `rtera`
+
+Everything in `rtera` revolves around the `rtera` object, which serves as a 
+template library with encapsulated rendering methods. In the above example, we 
+initialize an `rtera` with an empty template library by calling `Tera$new()` 
+with no arguments.
+
+If you have a complicated directory system with nested templates and inheritance 
+patterns - a common situation for web development, you may find it easier to 
+initialize an `rtera` by specifying the directory with a glob pattern. Suppose, 
+for example, that you have a website directory that looks like this: 
+
+```{r}
+#| label: directory
+template_dir <- system.file("templates", package = "rtera")
+
+cat(
+  "website",
+  list.files(template_dir, recursive = TRUE),
+  sep = "\n- "
+)
+```
+
+You can generate a new `rtera` around this directory like so
+
+```{r}
+#| label: glob
+tera <- Tera$new(file.path(template_dir, "**/*.html"))
+tera
+```
+
+## Adding templates
+
+Templates can be added from file or string.
+
+```{r}
+#| label: add-templates
+# add templates manually from file
+tera <- Tera$new()
+tera$add_file_templates(
+  "base.html" = file.path(template_dir, "hello.html"),
+  "index.html" = file.path(template_dir, "index.html")
+)
+tera
+
+# add templates manually from string
+tera$add_string_templates(
+  img = '<img src="{{ img_src }}">'
+)
+tera
+```
+
+If you initialize a tera instance with a glob and then add more file templates 
+to the template directory, you can reload with the glob to catch the new 
+templates.
+
+```{r}
+#| label: reload
+example_dir <- file.path(tempdir(), "rtera-templates")
+dir.create(example_dir)
+
+file.copy(
+  from = file.path(template_dir, "base.html"),
+  to = file.path(example_dir, "base.html")
+)
+
+tera <- Tera$new(file.path(example_dir, "*.html"))
+tera
+
+file.copy(
+  from = file.path(template_dir, "index.html"),
+  to = file.path(example_dir, "index.html")
+)
+
+tera$reload()
+```
+
+Reset to continue with built-in template examples.
+
+```{r}
+#| label: reset-tera-instance
+tera <- Tera$new(file.path(template_dir, "**/*.html"))
+```
+
+## Rendering basics
+
+Generally speaking, rendering a template involves supplying it with a `context`, 
+or a set of key-value pairs, with the keys being the variable names - surrounded 
+by `{{{ variable }}}` in the template - and their values being the content to 
+inject into the template. You can render a template to string or to a file. 
+Consider our hypothetical website's index template:
+
+```{r}
+#| label: index-template
+template_dir |>
+  file.path("index.html") |>
+  readLines(warn = FALSE) |>
+  cat(sep = "\n")
+```
+
+This has four variables: `{{{ title }}}`, `{{{ x }}}`, `{{{ y }}}`, and 
+`{{{ owner }}}`. You can render this template to a string by passing it a 
+context, a set of values for those variables. Here we render the template to a 
+string.
+
+```{r}
+#| label: render-to-string
+string <- tera$render_template(
+  "index.html",
+  title = "This is my blog",
+  x = "world",
+  y = "rtera",
+  owner = "Blake"
+)
+
+cat(string)
+```
+
+You can also render a template to file by specifying `outfile`.
+
+```{r}
+#| label: render-to-file
+outfile <- file.path(tempdir(), "rendered-index.html")
+
+tera$render_template(
+  "index.html",
+  title = "This is my blog",
+  x = "world",
+  y = "rtera",
+  owner = "Blake",
+  outfile = outfile
+)
+
+cat(readLines(outfile, warn = FALSE), sep = "\n")
+```
+
+And you can render a specific block in a template:
+
+```{r}
+#| label: render-block
+string <- tera$render_template(
+  "index.html",
+  title = "This is my blog",
+  x = "world",
+  y = "rtera",
+  owner = "Blake",
+  block = "content"
+)
+
+cat(string)
+```
+
+You can also render individual components defined in one of your templates, for
+example
+
+```{r}
+#| label: render-component
+string <- tera$render_component(
+  "widget",
+  title = "foo",
+  body = "<p>This is a widget!</p>"
+)
+
+cat(string)
+```
+
+And you can bypass library templates altogether and pass a template string
+directly
+
+```{r}
+#| label: render-string-template
+string <- tera$render_string(
+  '<img src="{{ img_src }}">',
+  img_src = "foo/bar.svg"
+)
+
+cat(string)
+```
+
+Two helper functions are also provided if you want to render a one-off template
+without going throught he process of initializing a tera instance. The 
+`render_template()` function will render a template file, and `render_string()`
+will render a string, same as the methods, but without the explicit tera 
+instance.
+
+## Inspecting the library
+
+There are some tools for inspecting the library. You can get a list of 
+templates and components in the library and a list of variables in a specific
+template.
+
+```{r}
+#| label: inspection
+tera$templates()
+tera$components()
+tera$variables("index.html")
+```
+
+There is also the print method, which provides some of this information.
+
+```{r}
+tera$print()
+```
+
+## Rendering logic
+
+The `Tera` templating engine offers a lot of additional functionality, like 
+control flow and data manipulation. For example, the blog post template shows 
+how to construct a for loop and apply built-in filters and functions. 
+
+```{r}
+#| label: for-loop
+template_dir |>
+  file.path("blog", "post.html") |>
+  readLines(warn = FALSE) |>
+  cat(sep = "\n")
+```
+
+In `{{{ now() | date(format="%Y-%m-%d") }}}`, `now()` is a function that returns
+the current date and time. It's returned value is then piped to the `date()` 
+filter, which provides formatting options. In R, one way of achieving the same
+thing is `format(Sys.Date(), "%Y-%m-%d") `. The template also has the for-loop 
+construction `{$ for product in products %}` that allows for looping over the 
+elements of a product table or array. When passed a data.frame, we get this:
+
+```{r}
+#| label: render-logic
+products <- data.frame(
+  name = c("apple", "banana", "orange"),
+  price = c(0.25, 0.4, 0.5)
+)
+
+string <- tera$render_template(
+  "blog/post.html",
+  title = "Fruit prices",
+  products = products
+)
+
+cat(string)
+```
+
+## Autoescape
+
+Tera escapes HTML by default:
+
+```{r}
+#| label: autoescape
+string <- tera$render_string(
+  "{{ html }}",
+  html = "<script>alert('Hello World!')</script>"
+)
+
+cat(string)
+```
+
+For one-off rendering like the above, the function takes an autoescape argument.
+
+```{r}
+#| label: autoescape-arg
+string <- tera$render_string(
+  "{{ html }}",
+  html = "<script>alert('Hello World!')</script>",
+  autoescape = FALSE
+)
+
+cat(string)
+```
+
+For rendering templates and components in the library, you can turn off 
+autoescape globally using `$autoescape_off()` and turn it back on with 
+`$autoescape_on()` (it is on by default).
+
+```{r collapse=TRUE comment="#>"}
+#| label: autoescape-toggle
+tera$autoescape_off()
+tera$autoescape_on()
+```
+
+## Delimiters
+
+Templates are marked up with `{% %}` for blocks, `{{ }}` for variables, and
+`{# #}` for comments. You can change these with `$set_delimiters()`, though only
+on an engine with an empty template library, so it must be done before any
+templates are added.
+
+```{r}
+#| label: set-delimiters
+alt <- Tera$new()
+
+alt$set_delimiters(
+  variable_start = "<<",
+  variable_end = ">>"
+)
+
+alt$render_string("<< greeting >>, world!", greeting = "Hello")
+```
+
+Each start delimiter must differ from the others, each delimiter must be exactly
+two bytes long, and any delimiter left `NULL` is unchanged. Use `$delimiters()`
+to see the current set.
+
+```{r}
+#| label: delimiters
+alt$delimiters()
+```
+
+## Inheritance
+
+Templates can inherit content from each other in one of two ways, either using
+`include` or, for more complicated inheritance, `extends`.
+
+```{r}
+#| label: include
+string <- tera$render_string(
+  '{%- include "index.html" -%}',
+  title = "This is my blog",
+  x = "world",
+  y = "rtera",
+  owner = "Blake"
+)
+
+cat(string)
+```
+
+The extension mechanism is a little more involved, requiring that you specify
+content blocks where content from a child document should be injected. For
+instance, our current library has `base.html`:
+
+```{r}
+#| label: base.html
+template_dir |>
+  file.path("base.html") |>
+  readLines(warn = FALSE) |>
+  cat(sep = "\n")
+```
+
+```{r}
+#| label: extends
+base_html <- '<body>
+  <div id="content">
+    {% block content %}
+    {% endblock content %}
+  </div>
+</body>'
+
+child_html <- '{% extends "base.html" %}
+{%- block content -%}
+  <h1>{{ title }}</h1>
+  <p>{{ paragraph }}</p>
+{%- endblock content -%}'
+
+tera$add_string_templates(
+  "base.html" = base_html,
+  "child.html" = child_html
+)
+
+string <- tera$render_to_string(
+  "child.html",
+  title = "Index",
+  paragraph = "Welcome to my homepage."
+)
+
+cat(string)
+```
