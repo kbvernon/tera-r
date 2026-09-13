@@ -1,21 +1,7 @@
-url: https://kbvernon.github.io/extera/
+url: https://kbvernon.github.io/tera-r/
 template:
   bootstrap: 5
 
 navbar:
   structure:
     right:  [github]
-
-reference:
-  - contents:
-      - new_engine
-      - render_template
-  - title: "ExTera methods"
-    contents:
-      - print
-      - add-file-templates
-      - add-string-templates
-      - list-templates
-      - render
-      - render-to-string
-      - autoescape
