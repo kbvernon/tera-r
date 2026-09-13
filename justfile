@@ -24,14 +24,14 @@ test:
 
 lint:
     jarl check R/* tests/testthat/*
-    air format --check R/* tests/*
+    air format --check R tests
 
 lint-fix:
     jarl check R/* -f 
 
 alias fmt := format
 format:
-    air format R/* tests/*
+    air format R tests
 
 alias doc := document
 document:
