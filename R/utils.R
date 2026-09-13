@@ -13,7 +13,7 @@ dots_to_json <- function(..., call = rlang::caller_call()) {
 .catch <- function(expr, call = rlang::caller_call()) {
   rlang::try_fetch(
     expr,
-    error = function(cnd) cli::cli_abort(cnd[["message"]], call = call)
+    error = function(cnd) cli::cli_abort("{cnd[['message']]}", call = call)
   )
 }
 
