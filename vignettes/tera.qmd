@@ -316,7 +316,7 @@ For rendering templates and components in the library, you can turn off
 autoescape globally using `$autoescape_off()` and turn it back on with 
 `$autoescape_on()` (it is on by default).
 
-```{r collapse=TRUE comment="#>"}
+```{r}
 #| label: autoescape-toggle
 tera$autoescape_off()
 tera$autoescape_on()
