@@ -21,7 +21,10 @@ test_that(".catch() passes non-conditions through unchanged", {
 })
 
 test_that(".catch() re-signals a thrown error, preserving its message", {
-  expect_error(.catch(rlang::abort("something went wrong")), "something went wrong")
+  expect_error(
+    .catch(rlang::abort("something went wrong")),
+    "something went wrong"
+  )
 })
 
 test_that(".catch() reports the calling function", {
