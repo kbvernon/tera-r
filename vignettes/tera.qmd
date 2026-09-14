@@ -71,6 +71,7 @@ You can generate a new `Tera` around this directory like so
 
 ```{r}
 #| label: glob
+#| collapse: true
 tera <- Tera$new(file.path(template_dir, "**/*.html"))
 tera
 ```
@@ -81,6 +82,7 @@ Templates can be added from file or string.
 
 ```{r}
 #| label: add-templates
+#| collapse: true
 # add templates manually from file
 tera <- Tera$new()
 tera$add_file_templates(
@@ -102,6 +104,7 @@ templates.
 
 ```{r}
 #| label: reload
+#| collapse: true
 example_dir <- file.path(tempdir(), "tera-templates")
 dir.create(example_dir)
 
@@ -119,6 +122,7 @@ file.copy(
 )
 
 tera$reload()
+tera
 ```
 
 Reset to continue with built-in template examples.
@@ -234,6 +238,7 @@ template.
 
 ```{r}
 #| label: inspection
+#| collapse: true
 tera$templates()
 tera$components()
 tera$variables("index.html")
@@ -242,6 +247,8 @@ tera$variables("index.html")
 There is also the print method, which provides some of this information.
 
 ```{r}
+#| label: tera-print
+#| collapse: true
 tera$print()
 ```
 
