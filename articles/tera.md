@@ -75,29 +75,19 @@ You can generate a new `Tera` around this directory like so
 ``` r
 tera <- Tera$new(file.path(template_dir, "**/*.html"))
 tera
+## ── Tera ──
+## Template library:
+## • base.html
+## • blog/post.html
+## • components.html
+## • hello.html
+## • index.html
+## 
+## Globals: 0
+## Components: 2
+## Autoescape: TRUE
+## Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 ```
-
-    ── Tera ──
-
-    Template library:
-
-    • base.html
-
-    • blog/post.html
-
-    • components.html
-
-    • hello.html
-
-    • index.html
-
-    Globals: 0
-
-    Components: 2
-
-    Autoescape: TRUE
-
-    Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 
 ## Adding templates
 
@@ -111,49 +101,32 @@ tera$add_file_templates(
   "index.html" = file.path(template_dir, "index.html")
 )
 tera
-```
+## ── Tera ──
+## Template library:
+## • base.html
+## • index.html
+## 
+## Globals: 0
+## Components: 0
+## Autoescape: TRUE
+## Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 
-    ── Tera ──
-
-    Template library:
-
-    • base.html
-
-    • index.html
-
-    Globals: 0
-
-    Components: 0
-
-    Autoescape: TRUE
-
-    Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
-
-``` r
 # add templates manually from string
 tera$add_string_templates(
   img = '<img src="{{ img_src }}">'
 )
 tera
+## ── Tera ──
+## Template library:
+## • base.html
+## • img
+## • index.html
+## 
+## Globals: 0
+## Components: 0
+## Autoescape: TRUE
+## Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 ```
-
-    ── Tera ──
-
-    Template library:
-
-    • base.html
-
-    • img
-
-    • index.html
-
-    Globals: 0
-
-    Components: 0
-
-    Autoescape: TRUE
-
-    Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 
 If you initialize a tera instance with a glob and then add more file
 templates to the template directory, you can reload with the glob to
@@ -167,40 +140,36 @@ file.copy(
   from = file.path(template_dir, "base.html"),
   to = file.path(example_dir, "base.html")
 )
-```
+## [1] TRUE
 
-    [1] TRUE
-
-``` r
 tera <- Tera$new(file.path(example_dir, "*.html"))
 tera
-```
+## ── Tera ──
+## Template library:
+## • base.html
+## 
+## Globals: 0
+## Components: 0
+## Autoescape: TRUE
+## Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 
-    ── Tera ──
-
-    Template library:
-
-    • base.html
-
-    Globals: 0
-
-    Components: 0
-
-    Autoescape: TRUE
-
-    Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
-
-``` r
 file.copy(
   from = file.path(template_dir, "index.html"),
   to = file.path(example_dir, "index.html")
 )
-```
+## [1] TRUE
 
-    [1] TRUE
-
-``` r
 tera$reload()
+tera
+## ── Tera ──
+## Template library:
+## • base.html
+## • index.html
+## 
+## Globals: 0
+## Components: 0
+## Autoescape: TRUE
+## Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 ```
 
 Reset to continue with built-in template examples.
@@ -368,50 +337,31 @@ specific template.
 
 ``` r
 tera$templates()
-```
-
-    [1] "base.html"       "blog/post.html"  "components.html" "hello.html"
-    [5] "index.html"     
-
-``` r
+## [1] "base.html"       "blog/post.html"  "components.html" "hello.html"     
+## [5] "index.html"
 tera$components()
-```
-
-    [1] "button" "widget"
-
-``` r
+## [1] "button" "widget"
 tera$variables("index.html")
+## [1] "owner" "p"     "title"
 ```
-
-    [1] "owner" "p"     "title"
 
 There is also the print method, which provides some of this information.
 
 ``` r
 tera$print()
+## ── Tera ──
+## Template library:
+## • base.html
+## • blog/post.html
+## • components.html
+## • hello.html
+## • index.html
+## 
+## Globals: 0
+## Components: 2
+## Autoescape: TRUE
+## Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 ```
-
-    ── Tera ──
-
-    Template library:
-
-    • base.html
-
-    • blog/post.html
-
-    • components.html
-
-    • hello.html
-
-    • index.html
-
-    Globals: 0
-
-    Components: 2
-
-    Autoescape: TRUE
-
-    Delimiters: {% Block %}, {{ Variable }}, {# Comment #}
 
 ## Rendering logic
 
@@ -468,7 +418,7 @@ cat(string)
       <body>
         <article>
           <h1>Fruit prices</h1>
-    <p>Last updated: 2026-09-13.</p>
+    <p>Last updated: 2026-09-14.</p>
     <ul>
         <li>apple: 0.25</li>
         <li>banana: 0.4</li>
