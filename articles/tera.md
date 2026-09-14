@@ -203,10 +203,9 @@ template_dir |>
     <p>Copyright 2026 by {{ owner }}.</p>
     {% endblock footer %}
 
-This has four variables: `{{ title }}`, `{{ x }}`, `{{ y }}`, and
-`{{ owner }}`. You can render this template to a string by passing it a
-context, a set of values for those variables. Here we render the
-template to a string.
+This has three variables: `{{ title }}`, `{{ p }}`, and `{{ owner }}`.
+You can render this template to a string by passing it a context, a set
+of values for those variables. Here we render the template to a string.
 
 ``` r
 string <- tera$render_template(
@@ -391,11 +390,10 @@ template_dir |>
 In `{{ now() | date(format="%Y-%m-%d") }}`, `now()` is a function that
 returns the current date and time. It’s returned value is then piped to
 the [`date()`](https://rdrr.io/r/base/date.html) filter, which provides
-formatting options. In R, one way of achieving the same thing is
-`format(Sys.Date(), "%Y-%m-%d")`. The template also has the for-loop
-construction `{$ for product in products %}` that allows for looping
-over the elements of a product table or array. When passed a data.frame,
-we get this:
+formatting options. The template also has the for-loop construction
+`{$ for product in products %}` that allows for looping over the
+elements of a product table or array. When passed a data.frame, we get
+this:
 
 ``` r
 products <- data.frame(
@@ -472,11 +470,10 @@ tera$autoescape_on()
 
 ## Delimiters
 
-Templates are marked up with `{% %}` for blocks,
-[`{ }`](https://rdrr.io/r/base/Paren.html) for variables, and `{# #}`
-for comments. You can change these with `$set_delimiters()`, though only
-on an engine with an empty template library, so it must be done before
-any templates are added.
+Templates are marked up with `{% blocks %}`, `{{ variables }}`, and
+`{# comments #}`. You can change these with `$set_delimiters()`, though
+only on an engine with an empty template library, so it must be done
+before any templates are added.
 
 ``` r
 alt <- Tera$new()
