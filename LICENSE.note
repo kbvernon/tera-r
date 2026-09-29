@@ -1,0 +1,15 @@
+The tera R package as a whole is distributed under the MIT license, as
+described in LICENSE and DESCRIPTION. That license covers the R code and the
+Rust glue code in src/rust, not the upstream Tera templating engine, which the
+package wraps.
+
+The templating engine itself is the Rust crate tera:
+
+  Source: https://github.com/Keats/tera (crates.io: tera)
+  Copyright (c) 2025 Vincent Prouillet
+  License: MIT
+
+The Rust crates that tera depends on are vendored at build time and carry their
+own licenses, predominantly MIT and Apache-2.0. Authoritative copyright and
+license statements for each of them are found in src/rust/vendor/<crate>, which
+is shipped in the package sources as src/rust/vendor.tar.xz.
