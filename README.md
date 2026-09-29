@@ -8,7 +8,7 @@
 
 [![R-CMD-check](https://github.com/kbvernon/tera-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbvernon/tera-r/actions/workflows/R-CMD-check.yaml)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/tera.png)](https://CRAN.R-project.org/package=tera)
+status](https://www.r-pkg.org/badges/version/tera)](https://CRAN.R-project.org/package=tera)
 [![extendr](https://img.shields.io/badge/extendr-%5E0.9.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
