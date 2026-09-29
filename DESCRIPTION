@@ -1,6 +1,6 @@
 Package: tera
-Title: Tera Templating Engine
-Version: 0.0.0.9000
+Title: Generate Text and Documents with the Tera Templating Engine
+Version: 0.1.0.9000
 Authors@R: 
     person("Kenneth Blake", "Vernon", , "kenneth.b.vernon@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0003-0098-5092"))
@@ -26,10 +26,10 @@ Imports:
 Suggests:
     knitr,
     quarto,
+    rmarkdown,
     testthat (>= 3.0.0),
     withr
 URL: https://github.com/kbvernon/tera-r, https://kbvernon.github.io/tera-r/
-VignetteBuilder: 
-    quarto
+VignetteBuilder: quarto, knitr
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
