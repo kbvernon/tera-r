@@ -8,15 +8,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/kbvernon/tera-r/blob/v0.1.0/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/kbvernon/tera-r/blob/main/DESCRIPTION)
 
-Vernon K (2026). *tera: Tera Templating Engine*. R package version
-0.0.0.9000, <https://github.com/kbvernon/tera-r>.
+Vernon K (2026). *tera: Generate Text and Documents with the Tera
+Templating Engine*. R package version 0.1.0.9000,
+<https://github.com/kbvernon/tera-r>.
 
     @Manual{,
-      title = {tera: Tera Templating Engine},
+      title = {tera: Generate Text and Documents with the Tera Templating Engine},
       author = {Kenneth Blake Vernon},
       year = {2026},
-      note = {R package version 0.0.0.9000},
+      note = {R package version 0.1.0.9000},
       url = {https://github.com/kbvernon/tera-r},
     }
