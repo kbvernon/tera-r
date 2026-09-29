@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/kbvernon/tera-r/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/kbvernon/tera-r/blob/v0.1.0/DESCRIPTION)
 
 Vernon K (2026). *tera: Tera Templating Engine*. R package version
 0.0.0.9000, <https://github.com/kbvernon/tera-r>.

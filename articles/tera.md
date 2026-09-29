@@ -416,7 +416,7 @@ cat(string)
       <body>
         <article>
           <h1>Fruit prices</h1>
-    <p>Last updated: 2026-09-14.</p>
+    <p>Last updated: 2026-09-29.</p>
     <ul>
         <li>apple: 0.25</li>
         <li>banana: 0.4</li>
